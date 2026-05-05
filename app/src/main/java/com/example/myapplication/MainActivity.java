@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Set user email in header
         if (navigationView.getHeaderCount() > 0) {
-            TextView tvEmail = navigationView.getHeaderView(0).findViewById(R.id.tvUserEmail);
-            tvEmail.setText(currentUser.getEmail());
+//            TextView tvEmail = navigationView.getHeaderView(0).findViewById(R.id.tvUserEmail);
+//            tvEmail.setText(currentUser.getEmail());
         }
 
         if (savedInstanceState == null) {
