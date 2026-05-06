@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
@@ -37,6 +38,8 @@ public class HomeFragment extends Fragment {
         dbHelper = new DatabaseHelper(getContext());
         productList = new ArrayList<>();
 
+        rvProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
         fetchProducts();
 
         return view;
@@ -45,28 +48,30 @@ public class HomeFragment extends Fragment {
     private void fetchProducts() {
         progressBar.setVisibility(View.VISIBLE);
         
-        // Simulating JSON response
-        String jsonResponse = "[" +
-                "{\"id\":1, \"name\":\"iPhone 13\", \"price\":\"$700\", \"description\":\"Apple iPhone 13 128GB\", \"image_url\":\"\"}," +
-                "{\"id\":2, \"name\":\"Samsung S22\", \"price\":\"$600\", \"description\":\"Samsung Galaxy S22\", \"image_url\":\"\"}," +
-                "{\"id\":3, \"name\":\"MacBook Air\", \"price\":\"$999\", \"description\":\"M1 Chip MacBook Air\", \"image_url\":\"\"}," +
-                "{\"id\":4, \"name\":\"Sony WH-1000XM4\", \"price\":\"$350\", \"description\":\"Noise Cancelling Headphones\", \"image_url\":\"\"}" +
-                "]";
+        // JSON format from requirement
+        String jsonResponse = "{" +
+                "\"products\": [" +
+                "{\"id\":1, \"title\":\"iPhone 11\", \"price\":85000, \"image_url\":\"\"}," +
+                "{\"id\":2, \"title\":\"Honda Bike\", \"price\":120000, \"image_url\":\"\"}," +
+                "{\"id\":3, \"title\":\"MacBook Pro\", \"price\":185000, \"image_url\":\"\"}," +
+                "{\"id\":4, \"title\":\"Sony Headphones\", \"price\":35000, \"image_url\":\"\"}" +
+                "]" +
+                "}";
 
         try {
-            JSONArray jsonArray = new JSONArray(jsonResponse);
+            JSONObject root = new JSONObject(jsonResponse);
+            JSONArray jsonArray = root.getJSONArray("products");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject obj = jsonArray.getJSONObject(i);
                 Product product = new Product(
                         obj.getInt("id"),
-                        obj.getString("name"),
-                        obj.getString("price"),
-                        obj.getString("description"),
-                        obj.getString("image_url")
+                        obj.getString("title"),
+                        obj.getInt("price"),
+                        obj.optString("image_url", "")
                 );
                 productList.add(product);
             }
-            adapter = new ProductAdapter(productList, dbHelper);
+            adapter = new ProductAdapter(productList, dbHelper, false);
             rvProducts.setAdapter(adapter);
         } catch (JSONException e) {
             Toast.makeText(getContext(), "Error parsing JSON", Toast.LENGTH_SHORT).show();

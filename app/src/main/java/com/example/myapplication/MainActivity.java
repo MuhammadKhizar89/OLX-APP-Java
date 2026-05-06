@@ -3,8 +3,6 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -39,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Mini OLX");
+        }
 
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -48,12 +49,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
-        // Set user email in header
-        if (navigationView.getHeaderCount() > 0) {
-//            TextView tvEmail = navigationView.getHeaderView(0).findViewById(R.id.tvUserEmail);
-//            tvEmail.setText(currentUser.getEmail());
-        }
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -70,9 +65,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_home) {
             selectedFragment = new HomeFragment();
         } else if (id == R.id.nav_favorites) {
-//            selectedFragment = new FavoritesFragment();
+            selectedFragment = new FavoritesFragment();
         } else if (id == R.id.nav_profile) {
-//            selectedFragment = new ProfileFragment();
+            selectedFragment = new ProfileFragment();
         } else if (id == R.id.nav_logout) {
             mAuth.signOut();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));

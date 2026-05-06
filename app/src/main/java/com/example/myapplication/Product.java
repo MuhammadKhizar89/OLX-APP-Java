@@ -2,24 +2,21 @@ package com.example.myapplication;
 
 public class Product {
     private int id;
-    private String name;
-    private String price;
-    private String description;
+    private String title;
+    private int price;
     private String imageUrl;
 
     public Product() {}
 
-    public Product(int id, String name, String price, String description, String imageUrl) {
+    public Product(int id, String title, int price, String imageUrl) {
         this.id = id;
-        this.name = name;
+        this.title = title;
         this.price = price;
-        this.description = description;
         this.imageUrl = imageUrl;
     }
 
     public int getId() { return id; }
-    public String getName() { return name; }
-    public String getPrice() { return price; }
-    public String getDescription() { return description; }
+    public String getTitle() { return title; }
+    public int getPrice() { return price; }
     public String getImageUrl() { return imageUrl; }
 }

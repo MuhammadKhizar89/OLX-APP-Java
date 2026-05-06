@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -29,6 +30,8 @@ public class FavoritesFragment extends Fragment {
         tvEmpty = view.findViewById(R.id.tvEmpty);
         dbHelper = new DatabaseHelper(getContext());
 
+        rvFavorites.setLayoutManager(new LinearLayoutManager(getContext()));
+
         loadFavorites();
 
         return view;
@@ -42,8 +45,15 @@ public class FavoritesFragment extends Fragment {
         } else {
             tvEmpty.setVisibility(View.GONE);
             rvFavorites.setVisibility(View.VISIBLE);
-            adapter = new ProductAdapter(favorites, dbHelper);
+            // Pass true for isFavoriteList to use the list item layout with delete button
+            adapter = new ProductAdapter(favorites, dbHelper, true);
             rvFavorites.setAdapter(adapter);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadFavorites();
     }
 }
